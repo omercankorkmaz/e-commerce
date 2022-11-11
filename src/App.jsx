@@ -1,13 +1,25 @@
 import React from 'react';
+import { createUseStyles } from 'react-jss';
 import './assets/global.css';
-import { Button } from 'primereact/button';
+import Main from './pages/Main';
+import Navbar from './components/Header';
 
-function App() {
+const useStyles = createUseStyles({
+    app: {
+        height: '100vh',
+        width: '100vw',
+    },
+});
+
+const App = () => {
+    const classes = useStyles();
+
     return (
-        <div className="App">
-            <Button label="INITIAL" loading loadingIcon="pi pi-spin pi-sun" />
+        <div className={classes.app}>
+            <Navbar />
+            <Main />
         </div>
     );
-}
+};
 
 export default App;
