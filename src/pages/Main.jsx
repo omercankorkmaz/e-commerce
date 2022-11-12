@@ -2,13 +2,15 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { DataView } from 'primereact/dataview';
 import { SelectButton } from 'primereact/selectbutton';
 import { RadioButton } from 'primereact/radiobutton';
+import { Checkbox } from 'primereact/checkbox';
 import ProductCard from '../components/ProductCard';
 
 const Main = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [brands, setBrands] = useState([]);
-    const [productTypeToShow, setProductTypeToShow] = useState('');
+    const [brandsToFilter, setBrandsToFilter] = useState([]);
+    const [productTypeToFilter, setProductTypeToFilter] = useState('');
 
     const sortingTypes = [
         { key: 'plh', name: 'Price low to high', field: 'price', order: 1 },
@@ -21,27 +23,65 @@ const Main = () => {
         sortingTypes[0]
     );
 
-    const productTypesToShow = useMemo(() => {
-        const arr = products.reduce((prevArr, currentEl) => {
-            if (!prevArr.includes(currentEl.itemType))
-                prevArr.push(currentEl.itemType);
-            return prevArr;
-        }, []);
-        setProductTypeToShow(arr[0]);
-        return arr;
-    }, [products]);
+    const productTypesToFilter = useMemo(
+        () =>
+            products.reduce((prevArr, currentEl) => {
+                if (!prevArr.includes(currentEl.itemType))
+                    prevArr.push(currentEl.itemType);
+                return prevArr;
+            }, []),
+        [products, brandsToFilter]
+    );
 
     const filteredItems = useMemo(
         () =>
             products.filter(
-                (product) => product.itemType === productTypeToShow
+                (product) =>
+                    (productTypeToFilter
+                        ? product.itemType === productTypeToFilter
+                        : true) &&
+                    (brandsToFilter[0] === 'all' ||
+                        brandsToFilter.includes(product.manufacturer))
             ),
-        [products, productTypeToShow]
+        [products, productTypeToFilter, brandsToFilter]
     );
 
     const rows = 16;
 
     const productTemplate = (product) => <ProductCard product={product} />;
+
+    const allProductNumbers = useMemo(
+        () =>
+            products.filter((product) =>
+                productTypeToFilter
+                    ? product.itemType === productTypeToFilter
+                    : true
+            ).length,
+        [products, productTypeToFilter]
+    );
+
+    useEffect(() => {
+        (async () => {
+            const brandsResult = await (
+                await fetch('http://127.0.0.1:3001/companies')
+            ).json();
+            const res = brandsResult.companies.map((company) => ({
+                name: company.name,
+                slug: company.slug,
+                id: company.account,
+                noOfProduct: products.filter(
+                    (product) =>
+                        (productTypeToFilter
+                            ? product.itemType === productTypeToFilter
+                            : true) && product.manufacturer === company.slug
+                ).length,
+            }));
+            setBrands(res);
+            setBrandsToFilter(['all']);
+
+            setIsLoading(false);
+        })();
+    }, [products, productTypeToFilter]);
 
     useEffect(() => {
         (async () => {
@@ -49,15 +89,29 @@ const Main = () => {
                 await fetch('http://127.0.0.1:3001/items')
             ).json();
             setProducts(productsResult.items);
-
-            const companiesResult = await (
-                await fetch('http://127.0.0.1:3001/companies')
-            ).json();
-            setBrands(companiesResult.companies);
-
-            setIsLoading(false);
         })();
     }, []);
+
+    const onSelectBrandsToFilterChange = (e) => {
+        const selectedCities = [...brandsToFilter];
+
+        if (selectedCities.indexOf('all') !== -1) {
+            selectedCities.splice(selectedCities.indexOf('all'), 1);
+        }
+        if (e.checked) selectedCities.push(e.value);
+        else selectedCities.splice(selectedCities.indexOf(e.value), 1);
+
+        setBrandsToFilter(selectedCities);
+    };
+
+    const onSelectAllBrandsToFilter = (e) => {
+        if (e.checked) {
+            // setBrandsToFilter(brands.map((el) => el.slug));
+            setBrandsToFilter(['all']);
+        } else {
+            setBrandsToFilter([]);
+        }
+    };
 
     return (
         <div className="main">
@@ -75,12 +129,43 @@ const Main = () => {
                 </div>
             ))}
             <SelectButton
-                value={productTypeToShow}
-                options={productTypesToShow}
+                value={productTypeToFilter}
+                options={productTypesToFilter}
                 onChange={(e) => {
-                    setProductTypeToShow(e.target.value);
+                    setProductTypeToFilter(
+                        e.target.value === null ? '' : e.target.value
+                    );
                 }}
             />
+
+            <div className="field-checkbox">
+                <Checkbox
+                    inputId="all"
+                    name="all"
+                    value="all"
+                    onChange={onSelectAllBrandsToFilter}
+                    checked={brandsToFilter.indexOf('all') !== -1}
+                />
+                <span htmlFor="all">All ({allProductNumbers})</span>
+            </div>
+            {brands.map((brand) => (
+                <div className="field-checkbox">
+                    <Checkbox
+                        inputId={brand.id}
+                        name={brand.slug}
+                        value={brand.slug}
+                        onChange={onSelectBrandsToFilterChange}
+                        checked={
+                            !brandsToFilter.includes('all') &&
+                            brandsToFilter.indexOf(brand.slug) !== -1
+                        }
+                    />
+                    <span htmlFor={brand.id}>
+                        {brand.name} ({brand.noOfProduct})
+                    </span>
+                </div>
+            ))}
+
             <DataView
                 value={filteredItems}
                 layout="grid"
@@ -91,7 +176,7 @@ const Main = () => {
                 sortOrder={selectedSortingType.order}
                 sortField={selectedSortingType.field}
             />
-            {productTypesToShow.length}
+            {productTypesToFilter.length}
             {brands.length}
         </div>
     );
