@@ -63,7 +63,14 @@ const ProductCard = ({ product }) => {
             <div className={classes.productCardAddButton}>
                 <Button
                     label="Add"
-                    onClick={() => dispatch(add({ slug: product.slug }))}
+                    onClick={() =>
+                        dispatch(
+                            add({
+                                slug: product.slug,
+                                unitPrice: product.price,
+                            })
+                        )
+                    }
                 />
             </div>
         </div>

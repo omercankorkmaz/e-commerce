@@ -2,17 +2,34 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const basketSlice = createSlice({
     name: 'basket',
-    initialState: {},
+    initialState: {
+        products: {},
+        totalPrice: 0,
+    },
     reducers: {
         add: (state, action) => {
             const { payload } = action;
-            if (!state[payload.slug]) state[payload.slug] = 1;
-            else state[payload.slug] += 1;
+            if (!state.products[payload.slug])
+                state.products[payload.slug] = {
+                    amount: 1,
+                    unitPrice: payload.unitPrice,
+                };
+            else state.products[payload.slug].amount += 1;
+            state.totalPrice += payload.unitPrice;
+            const totalPrice = state.totalPrice.toFixed(2);
+            state.totalPrice = Number(totalPrice);
         },
         remove: (state, action) => {
-            if (state[action.slug]) {
-                state[action.slug] -= 1;
+            const { payload } = action;
+            if (state.products[payload.slug]) {
+                state.products[payload.slug].amount -= 1;
+                if (state.products[payload.slug].amount === 0) {
+                    delete state.products[payload.slug];
+                }
             }
+            state.totalPrice -= payload.unitPrice;
+            const totalPrice = state.totalPrice.toFixed(2);
+            state.totalPrice = Number(totalPrice);
         },
     },
 });
