@@ -77,7 +77,7 @@ const Main = () => {
                 ).length,
             }));
             setBrands(res);
-            setBrandsToFilter(['all']);
+            if (!brandsToFilter.length) setBrandsToFilter(['all']);
 
             setIsLoading(false);
         })();
@@ -93,20 +93,19 @@ const Main = () => {
     }, []);
 
     const onSelectBrandsToFilterChange = (e) => {
-        const selectedCities = [...brandsToFilter];
+        const selectedBrands = [...brandsToFilter];
 
-        if (selectedCities.indexOf('all') !== -1) {
-            selectedCities.splice(selectedCities.indexOf('all'), 1);
+        if (selectedBrands.indexOf('all') !== -1) {
+            selectedBrands.splice(selectedBrands.indexOf('all'), 1);
         }
-        if (e.checked) selectedCities.push(e.value);
-        else selectedCities.splice(selectedCities.indexOf(e.value), 1);
+        if (e.checked) selectedBrands.push(e.value);
+        else selectedBrands.splice(selectedBrands.indexOf(e.value), 1);
 
-        setBrandsToFilter(selectedCities);
+        setBrandsToFilter(selectedBrands);
     };
 
     const onSelectAllBrandsToFilter = (e) => {
         if (e.checked) {
-            // setBrandsToFilter(brands.map((el) => el.slug));
             setBrandsToFilter(['all']);
         } else {
             setBrandsToFilter([]);
@@ -177,7 +176,6 @@ const Main = () => {
                 sortField={selectedSortingType.field}
             />
             {productTypesToFilter.length}
-            {brands.length}
         </div>
     );
 };
