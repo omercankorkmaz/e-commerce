@@ -3,6 +3,8 @@ import { DataView } from 'primereact/dataview';
 import { SelectButton } from 'primereact/selectbutton';
 import { RadioButton } from 'primereact/radiobutton';
 import { Checkbox } from 'primereact/checkbox';
+import { useSelector } from 'react-redux';
+import { selectBasket } from '../context/basketSlice';
 import ProductCard from '../components/ProductCard';
 
 const Main = () => {
@@ -12,6 +14,8 @@ const Main = () => {
     const [brandsToFilter, setBrandsToFilter] = useState([]);
     const [productTypeToFilter, setProductTypeToFilter] = useState('');
     const [tagsToFilter, setTagsToFilter] = useState({});
+    // const dispatch = useDispatch();
+    const basket = useSelector(selectBasket);
 
     const sortingTypes = [
         { key: 'plh', name: 'Price low to high', field: 'price', order: 1 },
@@ -196,6 +200,13 @@ const Main = () => {
 
     return (
         <div className="main" style={{ display: 'flex' }}>
+            <div>
+                {Object.keys(basket).map((product) => (
+                    <div>
+                        {product} {basket[product]}
+                    </div>
+                ))}
+            </div>
             <div>
                 {sortingTypes.map((sortingType) => (
                     <div key={sortingType.key} className="field-radiobutton">

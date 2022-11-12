@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import PropTypes from 'prop-types';
+import { Button } from 'primereact/button';
+import { useSelector, useDispatch } from 'react-redux';
+import { add, selectBasket } from '../context/basketSlice';
 import ItemPhoto from '../assets/itemPhoto.png';
 
 export class Product {
@@ -39,6 +42,12 @@ const useStyles = createUseStyles({
 
 const ProductCard = ({ product }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const basket = useSelector(selectBasket);
+
+    useEffect(() => {
+        console.log(basket);
+    });
 
     return (
         <div className={classes.productCard}>
@@ -51,7 +60,12 @@ const ProductCard = ({ product }) => {
             </div>
             <div className={classes.productCardPrice}>{product.price}</div>
             <div className={classes.productCardName}>{product.name}</div>
-            <div className={classes.productCardAddButton}>Add</div>
+            <div className={classes.productCardAddButton}>
+                <Button
+                    label="Add"
+                    onClick={() => dispatch(add({ slug: product.slug }))}
+                />
+            </div>
         </div>
     );
 };
