@@ -5,16 +5,221 @@ import { RadioButton } from 'primereact/radiobutton';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { useSelector, useDispatch } from 'react-redux';
+import { createUseStyles } from 'react-jss';
 import { selectBasket, add, remove } from '../context/basketSlice';
 import ProductCard from '../components/ProductCard';
 
+const useStyles = createUseStyles({
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginLeft: '6.5rem',
+        marginRight: '6.5rem',
+    },
+    settingsSection: {
+        flex: '0 0 auto',
+        width: '18.5rem',
+        marginTop: '2.398rem',
+        marginRight: '1rem',
+        '& .sorting-header': {
+            color: 'var(--secondary-text-color)',
+        },
+        '& .sorting-wrapper': {
+            marginTop: '.75rem',
+            marginBottom: '1.5rem',
+            backgroundColor: 'var(--primary-white)',
+            padding: '1.5rem',
+            height: '11.5rem',
+            borderRadius: '2px',
+            '& .field-radiobutton:last-child': {
+                marginBottom: 0,
+            },
+        },
+        '& .brandFiltering-header': {
+            marginTop: '1.5rem',
+            color: 'var(--secondary-text-color)',
+        },
+        '& .brandFiltering-wrapper': {
+            marginTop: '.75rem',
+            marginBottom: '1.5rem',
+            backgroundColor: 'var(--primary-white)',
+            padding: '0 0 1.5rem 0',
+        },
+        '& .brandFiltering-search-wrapper': {
+            padding: '1.5rem 1.5rem 1.188rem 1.5rem',
+            '& .brandFiltering-search': {
+                height: '3rem',
+                width: '100%',
+                border: '2px solid var(--input-color)',
+                borderRadius: '2px',
+                color: 'var(--input-color)',
+                '&::placeholder': {
+                    padding: '0.75rem 0 0.75rem 1rem',
+                    color: 'var(--input-color)',
+                },
+            },
+        },
+        '& .brandFiltering-checkbox-wrapper': {
+            margin: '0 1.5rem 0 1.5rem',
+            padding: '0 1.875rem 0 0',
+            height: '8.875rem',
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+            '& .field-checkbox:last-child': {
+                marginBottom: 0,
+            },
+            '& .field-checkbox': {
+                '& .name-of-product': {
+                    marginLeft: '.5rem',
+                },
+                '& .count-of-product': {
+                    color: 'var(--count-color)',
+                },
+            },
+        },
+        '& .tagFiltering-header': {
+            marginTop: '1.5rem',
+            color: 'var(--secondary-text-color)',
+        },
+        '& .tagFiltering-wrapper': {
+            marginTop: '.75rem',
+            backgroundColor: 'var(--primary-white)',
+            padding: '0 0 1.5rem 0',
+        },
+        '& .tagFiltering-search-wrapper': {
+            padding: '1.5rem 1.5rem 1.188rem 1.5rem',
+            '& .tagFiltering-search': {
+                height: '3rem',
+                width: '100%',
+                border: '2px solid var(--input-color)',
+                borderRadius: '2px',
+                color: 'var(--input-color)',
+                '&::placeholder': {
+                    padding: '0.75rem 0 0.75rem 1rem',
+                    color: 'var(--input-color)',
+                },
+            },
+        },
+        '& .tagFiltering-checkbox-wrapper': {
+            margin: '0 1.5rem 0 1.5rem',
+            padding: '0 1.875rem 0 0',
+            height: '8.875rem',
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+            '& .field-checkbox:last-child': {
+                marginBottom: 0,
+            },
+            '& .field-checkbox': {
+                '& .name-of-product': {
+                    marginLeft: '.5rem',
+                },
+                '& .count-of-product': {
+                    color: 'var(--count-color)',
+                },
+            },
+        },
+    },
+    tableSection: {
+        flex: '0 0 auto',
+        width: '38rem',
+        marginTop: '2.398rem',
+        '& .table-header': {
+            color: 'var(--ternary-text-color)',
+            fontSize: '1.25rem',
+        },
+        '& .product-tab': {
+            color: 'var(--ternary-text-color)',
+            marginTop: '1rem',
+            '& .p-button': {
+                height: '1.875rem',
+                border: 'none',
+                backgroundColor: 'var(--ternary-bg-color)',
+                color: 'var(--primary-color)',
+                marginRight: '.5rem',
+                borderRadius: '2px',
+                fontWeight: '600',
+                fontSize: '.813rem',
+                lineHeight: '1.125rem',
+                padding: 0,
+                '& span': {
+                    padding: '.375rem 1rem',
+                },
+                '&.p-highlight': {
+                    backgroundColor: 'var(--primary-color)',
+                    color: 'var(--ternary-bg-color)',
+                },
+            },
+        },
+        '& .product-table': {
+            marginTop: '1rem',
+            '& .p-dataview-content': {
+                padding: '1.25rem',
+                '& .grid': {
+                    columnGap: '1.5rem',
+                    rowGap: '1.25rem',
+                },
+            },
+        },
+    },
+    basketSection: {
+        flex: '0 0 auto',
+        width: '18.5rem',
+        marginLeft: '1rem',
+        '& .basket-wrapper': {
+            marginTop: '2.555rem',
+            border: '.5rem solid var(--primary-color)',
+            borderRadius: '2px',
+            backgroundColor: 'var(--primary-white)',
+            '& .products-wrapper': {
+                padding: '1.661rem 1.688rem 0 1.375rem',
+            },
+            '& .total-price-wrapper': {},
+        },
+    },
+});
+
 const Main = () => {
+    const classes = useStyles();
+
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [brands, setBrands] = useState([]);
+
+    const [searchForBrands, setSearchForBrands] = useState('');
     const [brandsToFilter, setBrandsToFilter] = useState([]);
-    const [productTypeToFilter, setProductTypeToFilter] = useState('');
+    const [searchForTags, setSearchForTags] = useState('');
     const [tagsToFilter, setTagsToFilter] = useState({});
+
+    const [productTypeToFilter, setProductTypeToFilter] = useState('');
+
+    const filteredBrands = useMemo(
+        () =>
+            searchForBrands
+                ? brands.filter((brand) =>
+                      brand.name
+                          .toLowerCase()
+                          .includes(searchForBrands.toLowerCase())
+                  )
+                : brands,
+        [brands, searchForBrands]
+    );
+
+    const filteredTagsToFilter = useMemo(() => {
+        if (searchForTags) {
+            const newTagsToFilter = { ...tagsToFilter };
+            Object.keys(newTagsToFilter).forEach((tag) => {
+                if (tag !== 'All')
+                    if (
+                        !tag.toLowerCase().includes(searchForTags.toLowerCase())
+                    ) {
+                        delete newTagsToFilter[tag];
+                    }
+            });
+            return newTagsToFilter;
+        }
+        return tagsToFilter;
+    }, [brands, searchForBrands, tagsToFilter, searchForTags]);
+
     const dispatch = useDispatch();
     const basket = useSelector(selectBasket);
 
@@ -200,59 +405,150 @@ const Main = () => {
     };
 
     return (
-        <div className="main" style={{ display: 'flex' }}>
-            <div>
-                {Object.keys(basket.products).map((product) => (
-                    <div key={product}>
-                        {product}
-                        <Button
-                            icon="pi pi-minus"
-                            onClick={() =>
-                                dispatch(
-                                    remove({
-                                        slug: product,
-                                        unitPrice:
-                                            basket.products[product].unitPrice,
-                                    })
-                                )
-                            }
-                        />
-                        {basket.products[product].amount}
-                        <Button
-                            icon="pi pi-plus"
-                            onClick={() =>
-                                dispatch(
-                                    add({
-                                        slug: product,
-                                        unitPrice:
-                                            basket.products[product].unitPrice,
-                                    })
-                                )
-                            }
+        <div className={classes.wrapper}>
+            <div className={classes.settingsSection}>
+                <span className="sorting-header">Sorting</span>
+                <div className="sorting-wrapper">
+                    {sortingTypes.map((sortingType) => (
+                        <div
+                            key={sortingType.key}
+                            className="field-radiobutton"
+                        >
+                            <RadioButton
+                                inputId={sortingType.key}
+                                name="sortingType"
+                                value={sortingType}
+                                onChange={(e) =>
+                                    setSelectedSortingType(e.value)
+                                }
+                                checked={
+                                    selectedSortingType.key === sortingType.key
+                                }
+                                // disabled={category.key === 'R'}
+                            />
+                            <label htmlFor={sortingType.key}>
+                                {sortingType.name}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+
+                <span className="brandFiltering-header">Brands</span>
+                <div className="brandFiltering-wrapper">
+                    <div className="brandFiltering-search-wrapper">
+                        <input
+                            name="brandFiltering-search"
+                            id="brandFiltering-search"
+                            className="brandFiltering-search"
+                            type="text"
+                            placeholder="Search Brand"
+                            value={searchForBrands}
+                            onChange={(e) => setSearchForBrands(e.target.value)}
                         />
                     </div>
-                ))}
-                {basket.totalPrice}
+                    <div className="brandFiltering-checkbox-wrapper">
+                        <div className="field-checkbox">
+                            <Checkbox
+                                inputId="all"
+                                name="all"
+                                value="all"
+                                onChange={onSelectAllBrandsToFilter}
+                                checked={brandsToFilter.indexOf('all') !== -1}
+                            />
+                            <span htmlFor="all" className="name-of-product">
+                                All&nbsp;
+                            </span>
+                            <span htmlFor="all" className="count-of-product">
+                                ({allProductNumbersForBrands})
+                            </span>
+                        </div>
+                        {filteredBrands.map((brand) => (
+                            <div key={brand.id} className="field-checkbox">
+                                <Checkbox
+                                    inputId={brand.id}
+                                    name={brand.slug}
+                                    value={brand.slug}
+                                    onChange={onSelectBrandToFilter}
+                                    checked={
+                                        !brandsToFilter.includes('all') &&
+                                        brandsToFilter.indexOf(brand.slug) !==
+                                            -1
+                                    }
+                                />
+                                <span
+                                    htmlFor={brand.id}
+                                    className="name-of-product"
+                                >
+                                    {brand.name}&nbsp;
+                                </span>
+                                <span
+                                    htmlFor={brand.id}
+                                    className="count-of-product"
+                                >
+                                    ({brand.noOfProduct})
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <span className="tagFiltering-header">Tags</span>
+                <div className="tagFiltering-wrapper">
+                    <div className="tagFiltering-search-wrapper">
+                        <input
+                            name="tagFiltering-search"
+                            id="tagFiltering-search"
+                            className="tagFiltering-search"
+                            type="text"
+                            placeholder="Search Tag"
+                            value={searchForTags}
+                            onChange={(e) => setSearchForTags(e.target.value)}
+                        />
+                    </div>
+                    <div className="tagFiltering-checkbox-wrapper">
+                        {Object.keys(filteredTagsToFilter).map((tag) => (
+                            <div key={tag} className="field-checkbox">
+                                <Checkbox
+                                    inputId={tag}
+                                    name={tag}
+                                    value={tag}
+                                    onChange={tagSelectHandler}
+                                    checked={
+                                        tag === 'All'
+                                            ? filteredTagsToFilter.All.checked
+                                            : !(
+                                                  filteredTagsToFilter.All &&
+                                                  filteredTagsToFilter.All
+                                                      .checked
+                                              ) &&
+                                              filteredTagsToFilter[tag].checked
+                                    }
+                                />
+                                <span
+                                    htmlFor={tag.id}
+                                    className="name-of-product"
+                                >
+                                    {tag}&nbsp;
+                                </span>
+                                <span
+                                    htmlFor={tag.id}
+                                    className="count-of-product"
+                                >
+                                    (
+                                    {tag === 'All'
+                                        ? allProductNumbersForTags
+                                        : filteredTagsToFilter[tag].number}
+                                    )
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <div>
-                {sortingTypes.map((sortingType) => (
-                    <div key={sortingType.key} className="field-radiobutton">
-                        <RadioButton
-                            inputId={sortingType.key}
-                            name="sortingType"
-                            value={sortingType}
-                            onChange={(e) => setSelectedSortingType(e.value)}
-                            checked={
-                                selectedSortingType.key === sortingType.key
-                            }
-                            // disabled={category.key === 'R'}
-                        />
-                        <label htmlFor={sortingType.key}>
-                            {sortingType.name}
-                        </label>
-                    </div>
-                ))}
+            <div className={classes.tableSection}>
+                <span className="table-header">Products</span>
                 <SelectButton
+                    className="product-tab"
                     value={productTypeToFilter}
                     options={productTypesToFilter}
                     onChange={(e) => {
@@ -261,76 +557,61 @@ const Main = () => {
                         );
                     }}
                 />
+                <DataView
+                    className="product-table"
+                    value={filteredProducts}
+                    layout="grid"
+                    itemTemplate={productTemplate}
+                    rows={rows}
+                    paginator
+                    loading={isLoading}
+                    sortOrder={selectedSortingType.order}
+                    sortField={selectedSortingType.field}
+                />
             </div>
-            <div>
-                <div className="field-checkbox">
-                    <Checkbox
-                        inputId="all"
-                        name="all"
-                        value="all"
-                        onChange={onSelectAllBrandsToFilter}
-                        checked={brandsToFilter.indexOf('all') !== -1}
-                    />
-                    <span htmlFor="all">
-                        All ({allProductNumbersForBrands})
-                    </span>
+            <div className={classes.basketSection}>
+                <div className="basket-wrapper">
+                    <div className="products-wrapper">
+                        {Object.keys(basket.products).map((product) => (
+                            <div key={product}>
+                                {product}
+                                <Button
+                                    icon="pi pi-minus"
+                                    className="p-button-text"
+                                    onClick={() =>
+                                        dispatch(
+                                            remove({
+                                                slug: product,
+                                                unitPrice:
+                                                    basket.products[product]
+                                                        .unitPrice,
+                                            })
+                                        )
+                                    }
+                                />
+                                {basket.products[product].amount}
+                                <Button
+                                    icon="pi pi-plus"
+                                    className="p-button-text"
+                                    onClick={() =>
+                                        dispatch(
+                                            add({
+                                                slug: product,
+                                                unitPrice:
+                                                    basket.products[product]
+                                                        .unitPrice,
+                                            })
+                                        )
+                                    }
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="total-price-wrapper">
+                        {basket.totalPrice}
+                    </div>
                 </div>
-                {brands.map((brand) => (
-                    <div key={brand.id} className="field-checkbox">
-                        <Checkbox
-                            inputId={brand.id}
-                            name={brand.slug}
-                            value={brand.slug}
-                            onChange={onSelectBrandToFilter}
-                            checked={
-                                !brandsToFilter.includes('all') &&
-                                brandsToFilter.indexOf(brand.slug) !== -1
-                            }
-                        />
-                        <span htmlFor={brand.id}>
-                            {brand.name} ({brand.noOfProduct})
-                        </span>
-                    </div>
-                ))}
             </div>
-            <div>
-                {Object.keys(tagsToFilter).map((tag) => (
-                    <div key={tag} className="field-checkbox">
-                        <Checkbox
-                            inputId={tag}
-                            name={tag}
-                            value={tag}
-                            onChange={tagSelectHandler}
-                            checked={
-                                tag === 'All'
-                                    ? tagsToFilter.All.checked
-                                    : !(
-                                          tagsToFilter.All &&
-                                          tagsToFilter.All.checked
-                                      ) && tagsToFilter[tag].checked
-                            }
-                        />
-                        <span htmlFor={tag.id}>
-                            {tag} (
-                            {tag === 'All'
-                                ? allProductNumbersForTags
-                                : tagsToFilter[tag].number}
-                            )
-                        </span>
-                    </div>
-                ))}
-            </div>
-
-            <DataView
-                value={filteredProducts}
-                layout="grid"
-                itemTemplate={productTemplate}
-                rows={rows}
-                paginator
-                loading={isLoading}
-                sortOrder={selectedSortingType.order}
-                sortField={selectedSortingType.field}
-            />
         </div>
     );
 };
