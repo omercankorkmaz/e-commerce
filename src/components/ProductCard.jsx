@@ -41,13 +41,16 @@ const useStyles = createUseStyles({
     productCardPrice: {
         marginBottom: '.5rem',
         color: 'var(--primary-color)',
+        fontWeight: 700,
+        fontSize: '.875rem',
+        lineHeight: '1.25rem',
     },
     productCardName: {
         marginBottom: '.563rem',
         minHeight: '2.5rem',
         color: 'var(--product-name-color)',
         fontWeight: 600,
-        fontSize: '.75rem',
+        fontSize: '.875rem',
         lineHeight: '1.25rem',
     },
     productCardAddButton: {

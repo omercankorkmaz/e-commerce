@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DataView } from 'primereact/dataview';
 import { SelectButton } from 'primereact/selectbutton';
-import { RadioButton } from 'primereact/radiobutton';
+// import { RadioButton } from 'primereact/radiobutton';
 import { Checkbox } from 'primereact/checkbox';
-import { Button } from 'primereact/button';
-import { useSelector, useDispatch } from 'react-redux';
 import { createUseStyles } from 'react-jss';
-import { selectBasket, add, remove } from '../context/basketSlice';
+import { useSelector } from 'react-redux';
+import { selectTable } from '../context/tableSlice';
 import ProductCard from '../components/ProductCard';
-import Minus from '../assets/Minus.svg';
-import Plus from '../assets/Plus.svg';
+import ArrowRight from '../assets/arrow-right.svg';
+import ArrowLeft from '../assets/arrow-left.svg';
+import Sorting from '../components/Sorting';
 
 const useStyles = createUseStyles({
     wrapper: {
@@ -23,101 +23,69 @@ const useStyles = createUseStyles({
         width: '18.5rem',
         marginTop: '2.398rem',
         marginRight: '1rem',
-        '& .sorting-header': {
+        '& .header': {
+            marginTop: '1.5rem',
             color: 'var(--secondary-text-color)',
         },
-        '& .sorting-wrapper': {
+        '& .wrapper': {
             marginTop: '.75rem',
-            marginBottom: '1.5rem',
             backgroundColor: 'var(--primary-white)',
-            padding: '1.5rem',
-            height: '11.5rem',
+            padding: '0 0 1.5rem 0',
+        },
+        '& .search-wrapper': {
+            padding: '1.5rem 1.5rem 1.188rem 1.5rem',
+            '& .search': {
+                height: '3rem',
+                width: '100%',
+                border: '2px solid var(--input-color)',
+                borderRadius: '2px',
+                color: 'var(--input-color)',
+                paddingLeft: '1rem',
+                '&::placeholder': {
+                    padding: '0.75rem 0 0.75rem 0',
+                    color: 'var(--input-color)',
+                },
+            },
+        },
+        '& .checkbox-wrapper': {
+            margin: '0rem 1.5rem 0 1.5rem',
+            padding: '0.1rem 1.875rem 0 0.1rem',
+            height: '8.875rem',
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+            '& .field-checkbox:last-child': {
+                marginBottom: 0,
+            },
+            '& .field-checkbox': {
+                '& .name-of-product': {
+                    marginLeft: '.5rem',
+                    fontSize: '.875rem',
+                },
+                '& .count-of-product': {
+                    color: 'var(--count-color)',
+                },
+            },
+        },
+        '& .p-checkbox .p-checkbox-box': {
+            boxShadow: '0px 1px 7px rgba(93, 56, 192, 0.4)',
             borderRadius: '2px',
-            '& .field-radiobutton:last-child': {
-                marginBottom: 0,
+            border: 0,
+            '&.p-highlight': {
+                backgroundColor: 'var(--primary-color)',
+            },
+            '& .p-checkbox-icon': {
+                fontSize: '0.688rem',
             },
         },
-        '& .brandFiltering-header': {
-            marginTop: '1.5rem',
-            color: 'var(--secondary-text-color)',
-        },
-        '& .brandFiltering-wrapper': {
-            marginTop: '.75rem',
-            marginBottom: '1.5rem',
+        '& .p-radiobutton-box': {
             backgroundColor: 'var(--primary-white)',
-            padding: '0 0 1.5rem 0',
-        },
-        '& .brandFiltering-search-wrapper': {
-            padding: '1.5rem 1.5rem 1.188rem 1.5rem',
-            '& .brandFiltering-search': {
-                height: '3rem',
-                width: '100%',
-                border: '2px solid var(--input-color)',
-                borderRadius: '2px',
-                color: 'var(--input-color)',
-                '&::placeholder': {
-                    padding: '0.75rem 0 0.75rem 1rem',
-                    color: 'var(--input-color)',
-                },
+            border: '2px solid var(--secondary-bg-color)',
+            '&.p-highlight': {
+                borderColor: 'var(--primary-color)',
+                backgroundColor: 'var(--primary-white)',
             },
-        },
-        '& .brandFiltering-checkbox-wrapper': {
-            margin: '0 1.5rem 0 1.5rem',
-            padding: '0 1.875rem 0 0',
-            height: '8.875rem',
-            overflowY: 'scroll',
-            overflowX: 'hidden',
-            '& .field-checkbox:last-child': {
-                marginBottom: 0,
-            },
-            '& .field-checkbox': {
-                '& .name-of-product': {
-                    marginLeft: '.5rem',
-                },
-                '& .count-of-product': {
-                    color: 'var(--count-color)',
-                },
-            },
-        },
-        '& .tagFiltering-header': {
-            marginTop: '1.5rem',
-            color: 'var(--secondary-text-color)',
-        },
-        '& .tagFiltering-wrapper': {
-            marginTop: '.75rem',
-            backgroundColor: 'var(--primary-white)',
-            padding: '0 0 1.5rem 0',
-        },
-        '& .tagFiltering-search-wrapper': {
-            padding: '1.5rem 1.5rem 1.188rem 1.5rem',
-            '& .tagFiltering-search': {
-                height: '3rem',
-                width: '100%',
-                border: '2px solid var(--input-color)',
-                borderRadius: '2px',
-                color: 'var(--input-color)',
-                '&::placeholder': {
-                    padding: '0.75rem 0 0.75rem 1rem',
-                    color: 'var(--input-color)',
-                },
-            },
-        },
-        '& .tagFiltering-checkbox-wrapper': {
-            margin: '0 1.5rem 0 1.5rem',
-            padding: '0 1.875rem 0 0',
-            height: '8.875rem',
-            overflowY: 'scroll',
-            overflowX: 'hidden',
-            '& .field-checkbox:last-child': {
-                marginBottom: 0,
-            },
-            '& .field-checkbox': {
-                '& .name-of-product': {
-                    marginLeft: '.5rem',
-                },
-                '& .count-of-product': {
-                    color: 'var(--count-color)',
-                },
+            '& .p-radiobutton-icon': {
+                backgroundColor: 'var(--primary-white)',
             },
         },
     },
@@ -161,87 +129,25 @@ const useStyles = createUseStyles({
                     rowGap: '1.25rem',
                 },
             },
-        },
-    },
-    basketSection: {
-        flex: '0 0 auto',
-        width: '18.5rem',
-        marginLeft: '1rem',
-        '& .basket-wrapper': {
-            marginTop: '2.555rem',
-            border: '.5rem solid var(--primary-color)',
-            borderRadius: '2px',
-            backgroundColor: 'var(--primary-white)',
-            '& .products-wrapper': {
-                padding: '1.661rem 1.688rem 0 1.375rem',
-                // width: '14.438rem',
-                '& .product-wrapper': {
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    // marginBottom: '1.149rem',
-                    '& .product-amount-handlers': {
-                        display: 'flex',
-                        height: '2.044rem',
-                        // '& .p-button:nth-child(1)': {
-                        //     '& img': {
-                        //         color: 'var(--primary-color)',
-                        //         height: '0.128rem',
-                        //         width: '0.625rem',
-                        //     },
-                        // },
-                        '& .p-button': {
-                            '& img': {
-                                color: 'var(--primary-color)',
-                                height: '0.639rem',
-                                width: '0.639rem',
-                            },
-                        },
-                        '& .product-amount': {
-                            height: '100%',
-                            width: '1.875rem',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: 'var(--primary-color)',
-                            color: 'var(--primary-white)',
-                        },
-                    },
-                    '& .product-name-and-price': {
-                        '& .product-price': {
-                            color: 'var(--primary-color)',
-                            fontWeight: 600,
-                            lineHeight: '1.125rem',
-                        },
-                    },
-                },
-            },
-            '& .total-price-wrapper': {
-                '& .total-price': {
-                    width: '5.75rem',
-                    height: '3.194rem',
-                    marginLeft: '10.75rem',
-                    marginRight: '1rem',
-                    marginBottom: '1.022rem',
-                    border: '3px solid var(--primary-color)',
-                    borderRadius: '2px',
-                    fontWeight: 600,
-                    fontSize: '0.875rem',
-                    lineHeight: '1rem',
+            '& .p-paginator': {
+                margin: 'auto',
+                marginTop: '.75rem',
+                padding: 0,
+                border: '0 !important',
+                height: '2.5rem',
+                width: '33.438rem',
+                '& button': {
+                    border: '0 !important',
                     color: 'var(--primary-color)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                },
+                '& .p-paginator-page.p-highlight': {
+                    backgroundColor: 'var(--primary-color)',
+                },
+                '& .p-paginator-page:not(.p-highlight)': {
+                    color: 'var(--secondary-text-color)',
                 },
             },
         },
-    },
-    horizontalLine: {
-        borderStyle: 'solid',
-        borderColor: 'var(--horizontal-line-color)',
-        borderWidth: '0px',
-        borderBottomWidth: '2px',
-        marginBottom: '1.149rem',
-        marginTop: '1.022rem',
     },
 });
 
@@ -256,6 +162,8 @@ const Main = () => {
     const [brandsToFilter, setBrandsToFilter] = useState([]);
     const [searchForTags, setSearchForTags] = useState('');
     const [tagsToFilter, setTagsToFilter] = useState({});
+
+    const table = useSelector(selectTable);
 
     const [productTypeToFilter, setProductTypeToFilter] = useState('');
 
@@ -286,20 +194,6 @@ const Main = () => {
         }
         return tagsToFilter;
     }, [brands, searchForBrands, tagsToFilter, searchForTags]);
-
-    const dispatch = useDispatch();
-    const basket = useSelector(selectBasket);
-
-    const sortingTypes = [
-        { key: 'plh', name: 'Price low to high', field: 'price', order: 1 },
-        { key: 'phl', name: 'Price high to low', field: 'price', order: -1 },
-        { key: 'dno', name: 'New to old', field: 'added', order: -1 },
-        { key: 'don', name: 'Old to new', field: 'added', order: 1 },
-    ];
-
-    const [selectedSortingType, setSelectedSortingType] = useState(
-        sortingTypes[0]
-    );
 
     const productTypesToFilter = useMemo(
         () =>
@@ -385,13 +279,20 @@ const Main = () => {
 
     useEffect(() => {
         (async () => {
-            const brandsResult = await (
-                await fetch('http://127.0.0.1:3001/companies')
-            ).json();
-            const res = brandsResult.companies.map((company) => ({
+            let brandsResult;
+            if (brands.length) {
+                brandsResult = [...brands];
+            } else {
+                brandsResult = (
+                    await (
+                        await fetch('http://127.0.0.1:3001/companies')
+                    ).json()
+                ).companies;
+            }
+            const res = brandsResult.map((company) => ({
                 name: company.name,
                 slug: company.slug,
-                id: company.account,
+                account: company.account,
                 noOfProduct: products.filter(
                     (product) =>
                         (productTypeToFilter
@@ -471,49 +372,82 @@ const Main = () => {
         }
     };
 
+    const prevPageLink = (options) => {
+        const { className, onClick, disabled } = options;
+        return (
+            <button
+                type="button"
+                className={className}
+                onClick={onClick}
+                disabled={disabled}
+                style={{ marginRight: '3.563rem' }}
+            >
+                <img
+                    src={ArrowLeft}
+                    alt="left-arrow"
+                    style={{ marginRight: '.438rem' }}
+                />
+                <span style={{ paddingRight: '.438rem' }}>Prev</span>
+            </button>
+        );
+    };
+
+    const nextPageLink = (options) => {
+        const { className, onClick, disabled } = options;
+        return (
+            <button
+                type="button"
+                className={className}
+                onClick={onClick}
+                disabled={disabled}
+                style={{ marginLeft: '3.187rem' }}
+            >
+                <span
+                    style={{ marginRight: '.313rem', paddingLeft: '.313rem' }}
+                >
+                    Next
+                </span>
+                <img src={ArrowRight} alt="right-arrow" />
+            </button>
+        );
+    };
+
+    const pageLinks = (options) => (
+        <button
+            type="button"
+            className={options.className}
+            onClick={options.onClick}
+        >
+            {options.page + 1}
+        </button>
+    );
+
+    const paginatorTemplate = {
+        layout: 'PrevPageLink PageLinks NextPageLink',
+        PrevPageLink: prevPageLink,
+        PageLinks: pageLinks,
+        NextPageLink: nextPageLink,
+    };
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.settingsSection}>
-                <span className="sorting-header">Sorting</span>
-                <div className="sorting-wrapper">
-                    {sortingTypes.map((sortingType) => (
-                        <div
-                            key={sortingType.key}
-                            className="field-radiobutton"
-                        >
-                            <RadioButton
-                                inputId={sortingType.key}
-                                name="sortingType"
-                                value={sortingType}
-                                onChange={(e) =>
-                                    setSelectedSortingType(e.value)
-                                }
-                                checked={
-                                    selectedSortingType.key === sortingType.key
-                                }
-                                // disabled={category.key === 'R'}
-                            />
-                            <label htmlFor={sortingType.key}>
-                                {sortingType.name}
-                            </label>
-                        </div>
-                    ))}
-                </div>
+                <Sorting />
 
-                <span className="brandFiltering-header">Brands</span>
-                <div className="brandFiltering-wrapper">
-                    <div className="brandFiltering-search-wrapper">
+                <span className="header">Brands</span>
+                <div className="wrapper" style={{ marginBottom: '1.5rem' }}>
+                    <div className="search-wrapper">
                         <input
                             name="brandFiltering-search"
                             id="brandFiltering-search"
-                            className="brandFiltering-search"
+                            className="search"
                             type="text"
                             placeholder="Search Brand"
                             value={searchForBrands}
                             onChange={(e) => setSearchForBrands(e.target.value)}
                         />
                     </div>
-                    <div className="brandFiltering-checkbox-wrapper">
+                    <div className="checkbox-wrapper">
                         <div className="field-checkbox">
                             <Checkbox
                                 inputId="all"
@@ -530,9 +464,9 @@ const Main = () => {
                             </span>
                         </div>
                         {filteredBrands.map((brand) => (
-                            <div key={brand.id} className="field-checkbox">
+                            <div key={brand.account} className="field-checkbox">
                                 <Checkbox
-                                    inputId={brand.id}
+                                    inputId={brand.account}
                                     name={brand.slug}
                                     value={brand.slug}
                                     onChange={onSelectBrandToFilter}
@@ -543,13 +477,13 @@ const Main = () => {
                                     }
                                 />
                                 <span
-                                    htmlFor={brand.id}
+                                    htmlFor={brand.account}
                                     className="name-of-product"
                                 >
                                     {brand.name}&nbsp;
                                 </span>
                                 <span
-                                    htmlFor={brand.id}
+                                    htmlFor={brand.account}
                                     className="count-of-product"
                                 >
                                     ({brand.noOfProduct})
@@ -559,20 +493,20 @@ const Main = () => {
                     </div>
                 </div>
 
-                <span className="tagFiltering-header">Tags</span>
-                <div className="tagFiltering-wrapper">
-                    <div className="tagFiltering-search-wrapper">
+                <span className="header">Tags</span>
+                <div className="wrapper">
+                    <div className="search-wrapper">
                         <input
                             name="tagFiltering-search"
                             id="tagFiltering-search"
-                            className="tagFiltering-search"
+                            className="search"
                             type="text"
                             placeholder="Search Tag"
                             value={searchForTags}
                             onChange={(e) => setSearchForTags(e.target.value)}
                         />
                     </div>
-                    <div className="tagFiltering-checkbox-wrapper">
+                    <div className="checkbox-wrapper">
                         {Object.keys(filteredTagsToFilter).map((tag) => (
                             <div key={tag} className="field-checkbox">
                                 <Checkbox
@@ -591,14 +525,11 @@ const Main = () => {
                                               filteredTagsToFilter[tag].checked
                                     }
                                 />
-                                <span
-                                    htmlFor={tag.id}
-                                    className="name-of-product"
-                                >
+                                <span htmlFor={tag} className="name-of-product">
                                     {tag}&nbsp;
                                 </span>
                                 <span
-                                    htmlFor={tag.id}
+                                    htmlFor={tag}
                                     className="count-of-product"
                                 >
                                     (
@@ -631,76 +562,11 @@ const Main = () => {
                     itemTemplate={productTemplate}
                     rows={rows}
                     paginator
+                    paginatorTemplate={paginatorTemplate}
                     loading={isLoading}
-                    sortOrder={selectedSortingType.order}
-                    sortField={selectedSortingType.field}
+                    sortOrder={table.sorting.order}
+                    sortField={table.sorting.field}
                 />
-            </div>
-            <div className={classes.basketSection}>
-                <div className="basket-wrapper">
-                    <div className="products-wrapper">
-                        {Object.keys(basket.products).map((product) => (
-                            <>
-                                <div key={product} className="product-wrapper">
-                                    <div className="product-name-and-price">
-                                        <div className="product-name">
-                                            {product}
-                                        </div>
-                                        <div className="product-price">
-                                            ₺{' '}
-                                            {basket.products[product].unitPrice}
-                                        </div>
-                                    </div>
-                                    <div className="product-amount-handlers">
-                                        <Button
-                                            icon={
-                                                <img src={Minus} alt="minus" />
-                                            }
-                                            className="p-button-text"
-                                            onClick={() =>
-                                                dispatch(
-                                                    remove({
-                                                        slug: product,
-                                                        unitPrice:
-                                                            basket.products[
-                                                                product
-                                                            ].unitPrice,
-                                                    })
-                                                )
-                                            }
-                                        />
-                                        <div className="product-amount">
-                                            {basket.products[product].amount}
-                                        </div>
-                                        <Button
-                                            icon={<img src={Plus} alt="plus" />}
-                                            className="p-button-text"
-                                            onClick={() =>
-                                                dispatch(
-                                                    add({
-                                                        slug: product,
-                                                        unitPrice:
-                                                            basket.products[
-                                                                product
-                                                            ].unitPrice,
-                                                    })
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* eslint-disable-next-line react/self-closing-comp */}
-                                <div className={classes.horizontalLine}></div>
-                            </>
-                        ))}
-                    </div>
-                    <div className="total-price-wrapper">
-                        <div className="total-price">
-                            <span>₺ {basket.totalPrice}</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     );

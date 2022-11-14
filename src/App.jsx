@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss';
 import './assets/styles/styles.scss';
 import Main from './pages/Main';
 import Navbar from './components/Header';
+import Footer from './components/Footer';
 
 const useStyles = createUseStyles({
     '@global': {
@@ -17,9 +18,7 @@ const useStyles = createUseStyles({
         },
     },
     app: {
-        // height: '100vh',
-        width: '100vw',
-        backgroundColor: 'var(--primary-bg-color)',
+        backgroundColor: 'var(--primary-white)',
         fontSize: '.875rem',
     },
 });
@@ -31,6 +30,7 @@ const App = () => {
         <div className={classes.app}>
             <Navbar />
             <Main />
+            <Footer />
         </div>
     );
 };

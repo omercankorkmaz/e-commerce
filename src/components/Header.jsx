@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSelector } from 'react-redux';
+import { OverlayPanel } from 'primereact/overlaypanel';
 import { selectBasket } from '../context/basketSlice';
-import Basket from '../assets/basket.svg';
+import Basket from './Basket';
+import BasketImage from '../assets/basket.svg';
 import Logo from '../assets/Logo.png';
 
 const useStyles = createUseStyles({
@@ -16,7 +18,6 @@ const useStyles = createUseStyles({
     },
     logo: {
         width: '8.829rem',
-        height: '2.513rem',
         marginTop: '1.0625rem',
     },
     basketButton: {
@@ -31,8 +32,8 @@ const useStyles = createUseStyles({
         width: '8.063rem',
         padding: 0,
         border: 0,
+        cursor: 'pointer',
         '& .wrapper': {
-            // width: '0.824rem',
             height: '1.533rem',
             display: 'flex',
             paddingLeft: '1.5rem',
@@ -42,7 +43,7 @@ const useStyles = createUseStyles({
                 color: 'var(--primary-white)',
                 WebkitTextStroke: '1px #000000',
                 textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                // width: '1.789rem',
+                fontWeight: 'bold',
             },
             '& img': {
                 width: '0.824rem',
@@ -51,11 +52,29 @@ const useStyles = createUseStyles({
             },
         },
     },
+    basketOverlayPanel: {
+        '&.p-overlaypanel': {
+            right: '6.5rem',
+            // left: 'unset !important',
+            zIndex: 10,
+            marginTop: '2.555rem',
+            '&:before': {
+                display: 'none',
+            },
+            '&:after': {
+                display: 'none',
+            },
+        },
+        '& .p-overlaypanel-content': {
+            padding: 0,
+        },
+    },
 });
 
 const Header = () => {
     const classes = useStyles();
     const basket = useSelector(selectBasket);
+    const basketOverlayPanel = useRef(null);
 
     return (
         <div className={classes.header}>
@@ -67,12 +86,22 @@ const Header = () => {
                 loadingIcon="pi pi-spin pi-sun"
                 icon={<img src={Basket} alt="basket" />}
             /> */}
-            <button type="button" className={classes.basketButton}>
+            <button
+                type="button"
+                className={classes.basketButton}
+                onClick={(e) => basketOverlayPanel.current.toggle(e)}
+            >
                 <div className="wrapper">
-                    <img src={Basket} alt="basket" />
+                    <img src={BasketImage} alt="basket" />
                     <span>₺ {basket.totalPrice}</span>
                 </div>
             </button>
+            <OverlayPanel
+                ref={basketOverlayPanel}
+                className={classes.basketOverlayPanel}
+            >
+                <Basket />
+            </OverlayPanel>
         </div>
     );
 };
