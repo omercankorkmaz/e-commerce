@@ -7,7 +7,7 @@ import Minus from '../assets/Minus.svg';
 import Plus from '../assets/Plus.svg';
 
 const useStyles = createUseStyles({
-    basketSection: {
+    basket: {
         flex: '0 0 auto',
         width: '18.5rem',
         '& .basket-wrapper': {
@@ -16,6 +16,8 @@ const useStyles = createUseStyles({
             backgroundColor: 'var(--primary-white)',
             '& .products-wrapper': {
                 padding: '1.661rem 1.688rem 0 1.375rem',
+                maxHeight: '40rem',
+                overflow: 'auto',
                 '& .product-wrapper': {
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -91,7 +93,7 @@ const Basket = () => {
     const basket = useSelector(selectBasket);
 
     return (
-        <div className={classes.basketSection}>
+        <div className={classes.basket}>
             <div className="basket-wrapper">
                 <div className="products-wrapper">
                     {Object.keys(basket.products).map((product) => (

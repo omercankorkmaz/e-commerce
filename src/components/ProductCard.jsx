@@ -5,24 +5,7 @@ import { Button } from 'primereact/button';
 import { useDispatch } from 'react-redux';
 import { add } from '../context/basketSlice';
 import ItemPhoto from '../assets/itemPhoto.png';
-
-export class Product {
-    tags;
-
-    price;
-
-    name;
-
-    description;
-
-    slug;
-
-    added;
-
-    manufacturer;
-
-    itemType;
-}
+import Product from '../models/product';
 
 const useStyles = createUseStyles({
     productCard: {
