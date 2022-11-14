@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTable, setBrandsToFilter } from '../context/tableSlice';
+import { selectTable, setBrandsToFilter } from '../redux/tableSlice';
 import Sorting from '../components/Sorting';
 import Brands from '../components/Brands';
 import ProductTypes from '../components/ProductTypes';

@@ -2,7 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Button } from 'primereact/button';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectBasket, add, remove } from '../context/basketSlice';
+import { selectBasket, add, remove } from '../redux/basketSlice';
 import Minus from '../assets/Minus.svg';
 import Plus from '../assets/Plus.svg';
 

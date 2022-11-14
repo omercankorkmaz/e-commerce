@@ -6,7 +6,7 @@ import {
     selectTable,
     setSearchForTags,
     setTagsToFilter,
-} from '../context/tableSlice';
+} from '../redux/tableSlice';
 import Product from '../models/product';
 import Brand from '../models/brand';
 

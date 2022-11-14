@@ -3,7 +3,7 @@ import { DataView } from 'primereact/dataview';
 import { createUseStyles } from 'react-jss';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { selectTable } from '../context/tableSlice';
+import { selectTable } from '../redux/tableSlice';
 import ProductCard from './ProductCard';
 import ArrowRight from '../assets/arrow-right.svg';
 import ArrowLeft from '../assets/arrow-left.svg';

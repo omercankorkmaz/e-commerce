@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSelector } from 'react-redux';
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { selectBasket } from '../context/basketSlice';
+import { selectBasket } from '../redux/basketSlice';
 import Basket from './Basket';
 import BasketImage from '../assets/basket.svg';
 import Logo from '../assets/Logo.png';

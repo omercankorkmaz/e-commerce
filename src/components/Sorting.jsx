@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { RadioButton } from 'primereact/radiobutton';
 import { createUseStyles } from 'react-jss';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTable, setFilter } from '../context/tableSlice';
+import { selectTable, setFilter } from '../redux/tableSlice';
 
 const useStyles = createUseStyles({
     sorting: {

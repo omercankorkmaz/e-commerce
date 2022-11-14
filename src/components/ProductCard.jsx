@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 import PropTypes from 'prop-types';
 import { Button } from 'primereact/button';
 import { useDispatch } from 'react-redux';
-import { add } from '../context/basketSlice';
+import { add } from '../redux/basketSlice';
 import ItemPhoto from '../assets/itemPhoto.png';
 import Product from '../models/product';
 

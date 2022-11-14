@@ -3,7 +3,7 @@ import { SelectButton } from 'primereact/selectbutton';
 import { createUseStyles } from 'react-jss';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { selectTable, setProductTypeToFilter } from '../context/tableSlice';
+import { selectTable, setProductTypeToFilter } from '../redux/tableSlice';
 import Product from '../models/product';
 
 const useStyles = createUseStyles({
