@@ -27,9 +27,14 @@ const useStyles = createUseStyles({
                 border: '0 !important',
                 height: '2.5rem',
                 width: '33.438rem',
+                backgroundColor: 'var(--main-bg-color)',
                 '& button': {
                     border: '0 !important',
                     color: 'var(--primary-color)',
+                    backgroundColor: 'var(--main-bg-color)',
+                    '&:hover:not(.p-highlight)': {
+                        color: 'var(--secondary-color) !important',
+                    },
                 },
                 '& .p-paginator-page.p-highlight': {
                     backgroundColor: 'var(--primary-color)',

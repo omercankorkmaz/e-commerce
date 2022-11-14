@@ -79,16 +79,14 @@ const useStyles = createUseStyles({
             },
         },
     },
-    horizontalLine: {
-        borderStyle: 'solid',
-        borderColor: 'var(--horizontal-line-color)',
-        borderWidth: '0px',
-        borderBottomWidth: '2px',
-        marginBottom: '1.149rem',
-        marginTop: '1.022rem',
+    '@media (max-width: 640px)': {
+        basket: {
+            width: '60vw',
+        },
     },
     '@media (max-width: 480px)': {
         basket: {
+            width: '70vw',
             '& .basket-wrapper': {
                 '& .total-price-wrapper': {
                     '& .total-price': {
@@ -109,61 +107,79 @@ const Basket = () => {
         <div className={classes.basket}>
             <div className="basket-wrapper">
                 <div className="products-wrapper">
-                    {Object.keys(basket.products).map((product) => (
-                        <div key={product}>
-                            <div className="product-wrapper">
-                                <div className="product-name-and-price">
-                                    <div className="product-name">
-                                        {product}
+                    {Object.keys(basket.products).length === 0 ? (
+                        <p>You haven&apos;t added anything to your cart yet</p>
+                    ) : (
+                        Object.keys(basket.products).map((product) => (
+                            <div key={product}>
+                                <div className="product-wrapper">
+                                    <div className="product-name-and-price">
+                                        <div className="product-name">
+                                            {product}
+                                        </div>
+                                        <div className="product-price">
+                                            ₺
+                                            {Number(
+                                                (
+                                                    basket.products[product]
+                                                        .unitPrice *
+                                                    basket.products[product]
+                                                        .amount
+                                                ).toFixed(2)
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="product-price">
-                                        ₺ {basket.products[product].unitPrice}
+                                    <div className="product-amount-handlers">
+                                        <Button
+                                            icon={
+                                                <img src={Minus} alt="minus" />
+                                            }
+                                            className="p-button-text"
+                                            onClick={() =>
+                                                dispatch(
+                                                    remove({
+                                                        slug: product,
+                                                        unitPrice:
+                                                            basket.products[
+                                                                product
+                                                            ].unitPrice,
+                                                    })
+                                                )
+                                            }
+                                        />
+                                        <div className="product-amount">
+                                            {basket.products[product].amount}
+                                        </div>
+                                        <Button
+                                            icon={<img src={Plus} alt="plus" />}
+                                            className="p-button-text"
+                                            onClick={() =>
+                                                dispatch(
+                                                    add({
+                                                        slug: product,
+                                                        unitPrice:
+                                                            basket.products[
+                                                                product
+                                                            ].unitPrice,
+                                                    })
+                                                )
+                                            }
+                                        />
                                     </div>
                                 </div>
-                                <div className="product-amount-handlers">
-                                    <Button
-                                        icon={<img src={Minus} alt="minus" />}
-                                        className="p-button-text"
-                                        onClick={() =>
-                                            dispatch(
-                                                remove({
-                                                    slug: product,
-                                                    unitPrice:
-                                                        basket.products[product]
-                                                            .unitPrice,
-                                                })
-                                            )
-                                        }
-                                    />
-                                    <div className="product-amount">
-                                        {basket.products[product].amount}
-                                    </div>
-                                    <Button
-                                        icon={<img src={Plus} alt="plus" />}
-                                        className="p-button-text"
-                                        onClick={() =>
-                                            dispatch(
-                                                add({
-                                                    slug: product,
-                                                    unitPrice:
-                                                        basket.products[product]
-                                                            .unitPrice,
-                                                })
-                                            )
-                                        }
-                                    />
-                                </div>
-                            </div>
 
-                            <div className={classes.horizontalLine} />
+                                <div className={classes.horizontalLine} />
+                            </div>
+                        ))
+                    )}
+                </div>
+                {Object.keys(basket.products).length !== 0 && (
+                    <div className="total-price-wrapper">
+                        <div className="total-price">
+                            <span>₺ {basket.totalPrice}</span>
                         </div>
-                    ))}
-                </div>
-                <div className="total-price-wrapper">
-                    <div className="total-price">
-                        <span>₺ {basket.totalPrice}</span>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

@@ -69,17 +69,6 @@ const useStyles = createUseStyles({
                 },
             },
         },
-        '& .p-checkbox .p-checkbox-box': {
-            boxShadow: '0px 1px 7px rgba(93, 56, 192, 0.4)',
-            borderRadius: '2px',
-            border: 0,
-            '&.p-highlight': {
-                backgroundColor: 'var(--primary-color)',
-            },
-            '& .p-checkbox-icon': {
-                fontSize: '0.688rem',
-            },
-        },
     },
     tableSection: {
         flex: '0 0 auto',
