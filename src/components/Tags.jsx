@@ -106,7 +106,7 @@ const Tags = ({ products, brands }) => {
     };
 
     return (
-        <>
+        <div className="setting-element">
             <span className="header">Tags</span>
             <div className="wrapper">
                 <div className="search-wrapper">
@@ -153,7 +153,7 @@ const Tags = ({ products, brands }) => {
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

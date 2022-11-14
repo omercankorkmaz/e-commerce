@@ -57,7 +57,7 @@ const Brands = ({ products, brands }) => {
     };
 
     return (
-        <>
+        <div className="setting-element">
             <span className="header">Brands</span>
             <div className="wrapper" style={{ marginBottom: '1.5rem' }}>
                 <div className="search-wrapper">
@@ -118,7 +118,7 @@ const Brands = ({ products, brands }) => {
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

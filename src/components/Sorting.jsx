@@ -44,7 +44,7 @@ const Sorting = () => {
     }, []);
 
     return (
-        <div className={classes.sorting}>
+        <div className={`${classes.sorting} setting-element`}>
             <span className="sorting-header">Sorting</span>
             <div className="sorting-wrapper">
                 {sortingTypes.map((sortingType) => (

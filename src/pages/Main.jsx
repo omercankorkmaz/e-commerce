@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useSelector, useDispatch } from 'react-redux';
+import { OverlayPanel } from 'primereact/overlaypanel';
+import { Button } from 'primereact/button';
 import { selectTable, setBrandsToFilter } from '../redux/tableSlice';
 import Sorting from '../components/Sorting';
 import Brands from '../components/Brands';
@@ -12,14 +14,18 @@ const useStyles = createUseStyles({
     wrapper: {
         display: 'flex',
         flexWrap: 'wrap',
-        marginLeft: '6.5rem',
-        marginRight: '6.5rem',
+        margin: '0 6.5rem',
     },
     settingsSection: {
         flex: '0 0 auto',
         width: '18.5rem',
         marginTop: '2.398rem',
         marginRight: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        '&.narrow-settings-section': {
+            display: 'none',
+        },
         '& .header': {
             marginTop: '1.5rem',
             color: 'var(--secondary-text-color)',
@@ -84,6 +90,58 @@ const useStyles = createUseStyles({
             fontSize: '1.25rem',
         },
     },
+    '@media (max-width: 1130px)': {
+        wrapper: {
+            margin: '0 3rem',
+        },
+    },
+    '@media (max-width: 1024px)': {
+        wrapper: {
+            margin: '0 2.5rem',
+        },
+        settingsSection: {
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            width: '100%',
+            marginRight: 0,
+            '& .setting-element': {
+                flexGrow: 1,
+                flexBasis: 0,
+                margin: 0,
+            },
+            '& .sorting-header, .header': {
+                marginLeft: '1.5rem',
+                color: 'var(--primary-color)',
+            },
+        },
+        tableSection: {
+            width: '100%',
+        },
+    },
+    '@media (max-width: 768px)': {
+        wrapper: {
+            margin: '0 1.5rem',
+        },
+        settingsSection: {
+            '&.wide-settings-section': {
+                display: 'none',
+            },
+            '&.narrow-settings-section': {
+                display: 'block',
+            },
+        },
+    },
+    overlayPanel: {
+        zIndex: 100,
+        '& .setting-element': {
+            height: '15rem',
+            overflow: 'auto',
+            marginBottom: '2rem',
+            '& .sorting-wrapper': {
+                padding: '1.5rem 0',
+            },
+        },
+    },
 });
 
 const Main = () => {
@@ -94,6 +152,8 @@ const Main = () => {
 
     const dispatch = useDispatch();
     const table = useSelector(selectTable);
+
+    const overlayPanel = useRef(null);
 
     useEffect(() => {
         (async () => {
@@ -135,10 +195,29 @@ const Main = () => {
 
     return (
         <div className={classes.wrapper}>
-            <div className={classes.settingsSection}>
+            <div className={`${classes.settingsSection} wide-settings-section`}>
                 <Sorting />
                 <Brands products={products} brands={brands} />
                 <Tags products={products} brands={brands} />
+            </div>
+            <div
+                className={`${classes.settingsSection} narrow-settings-section`}
+            >
+                <Button
+                    type="button"
+                    className={classes.basketButton}
+                    onClick={(e) => overlayPanel.current.toggle(e)}
+                    label="Filters"
+                />
+
+                <OverlayPanel
+                    ref={overlayPanel}
+                    className={classes.overlayPanel}
+                >
+                    <Sorting />
+                    <Brands products={products} brands={brands} />
+                    <Tags products={products} brands={brands} />
+                </OverlayPanel>
             </div>
             <div className={classes.tableSection}>
                 <span className="table-header">Products</span>
