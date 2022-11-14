@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
             height: '11.5rem',
             borderRadius: '2px',
             '& .field-radiobutton:last-child': {
-                marginBottom: 0,
+                marginBottom: '0.3rem',
             },
         },
     },

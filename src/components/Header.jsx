@@ -55,6 +55,7 @@ const useStyles = createUseStyles({
     basketOverlayPanel: {
         '&.p-overlaypanel': {
             right: '6.5rem',
+            border: 0,
             // left: 'unset !important',
             zIndex: 10,
             marginTop: '2.555rem',
@@ -67,6 +68,38 @@ const useStyles = createUseStyles({
         },
         '& .p-overlaypanel-content': {
             padding: 0,
+        },
+    },
+    '@media (max-width: 768px)': {
+        basketButton: {
+            right: '4.5rem',
+        },
+    },
+    '@media (max-width: 640px)': {
+        basketButton: {
+            right: '2.5rem',
+        },
+    },
+    '@media (max-width: 480px)': {
+        basketButton: {
+            right: '0.5rem',
+        },
+        header: {
+            textAlign: 'left',
+        },
+        logo: {
+            marginLeft: '0.5rem',
+        },
+    },
+    '@media (max-width: 320px)': {
+        basketButton: {
+            right: '0',
+        },
+        header: {
+            textAlign: 'left',
+        },
+        logo: {
+            marginLeft: '0',
         },
     },
 });

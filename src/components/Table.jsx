@@ -40,6 +40,17 @@ const useStyles = createUseStyles({
             },
         },
     },
+    '@media (max-width: 768px)': {
+        table: {
+            '& .p-paginator': {
+                width: 'auto !important',
+                '& button': {
+                    padding: '0.1rem',
+                    margin: '0.1rem !important',
+                },
+            },
+        },
+    },
 });
 
 const Table = ({ products }) => {

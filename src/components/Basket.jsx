@@ -9,7 +9,7 @@ import Plus from '../assets/Plus.svg';
 const useStyles = createUseStyles({
     basket: {
         flex: '0 0 auto',
-        width: '18.5rem',
+        // width: '18.5rem',
         '& .basket-wrapper': {
             border: '.5rem solid var(--primary-color)',
             borderRadius: '2px',
@@ -58,6 +58,8 @@ const useStyles = createUseStyles({
                 },
             },
             '& .total-price-wrapper': {
+                display: 'flex',
+                justifyContent: 'end',
                 '& .total-price': {
                     width: '5.75rem',
                     height: '3.194rem',
@@ -84,6 +86,17 @@ const useStyles = createUseStyles({
         borderBottomWidth: '2px',
         marginBottom: '1.149rem',
         marginTop: '1.022rem',
+    },
+    '@media (max-width: 480px)': {
+        basket: {
+            '& .basket-wrapper': {
+                '& .total-price-wrapper': {
+                    '& .total-price': {
+                        marginLeft: '0',
+                    },
+                },
+            },
+        },
     },
 });
 

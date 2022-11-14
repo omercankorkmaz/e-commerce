@@ -52,7 +52,7 @@ const useStyles = createUseStyles({
         },
         '& .checkbox-wrapper': {
             margin: '0rem 1.5rem 0 1.5rem',
-            padding: '0.1rem 1.875rem 0 0.1rem',
+            padding: '0.1rem 1.875rem 0 0.25rem',
             height: '8.875rem',
             overflowY: 'scroll',
             overflowX: 'hidden',
@@ -95,7 +95,7 @@ const useStyles = createUseStyles({
             margin: '0 3rem',
         },
     },
-    '@media (max-width: 1024px)': {
+    '@media (max-width: 1030px)': {
         wrapper: {
             margin: '0 2.5rem',
         },
@@ -103,7 +103,7 @@ const useStyles = createUseStyles({
             flexWrap: 'wrap',
             flexDirection: 'row',
             width: '100%',
-            marginRight: 0,
+            margin: '2rem 0 0 0',
             '& .setting-element': {
                 flexGrow: 1,
                 flexBasis: 0,
@@ -116,6 +116,7 @@ const useStyles = createUseStyles({
         },
         tableSection: {
             width: '100%',
+            marginTop: 0,
         },
     },
     '@media (max-width: 768px)': {
@@ -123,6 +124,35 @@ const useStyles = createUseStyles({
             margin: '0 1.5rem',
         },
         settingsSection: {
+            margin: '1.5rem 0',
+            '&.wide-settings-section': {
+                display: 'none',
+            },
+            '&.narrow-settings-section': {
+                display: 'block',
+            },
+        },
+    },
+    '@media (max-width: 640px)': {
+        wrapper: {
+            margin: '0 0.75rem',
+        },
+        settingsSection: {
+            margin: '1rem 0',
+            '&.wide-settings-section': {
+                display: 'none',
+            },
+            '&.narrow-settings-section': {
+                display: 'block',
+            },
+        },
+    },
+    '@media (max-width: 480px)': {
+        wrapper: {
+            margin: '0 0.25rem',
+        },
+        settingsSection: {
+            margin: '0.75rem 0',
             '&.wide-settings-section': {
                 display: 'none',
             },
@@ -133,13 +163,39 @@ const useStyles = createUseStyles({
     },
     overlayPanel: {
         zIndex: 100,
-        '& .setting-element': {
-            height: '15rem',
-            overflow: 'auto',
-            marginBottom: '2rem',
-            '& .sorting-wrapper': {
-                padding: '1.5rem 0',
+        maxHeight: '50vh',
+        overflow: 'auto',
+        border: '.1rem solid var(--primary-color)',
+        borderRadius: '2px',
+        '&.settings-section-in-overlay': {
+            width: 'auto',
+            marginTop: '10px',
+            '& .wrapper': {
+                margin: '0 !important',
+                padding: '0 !important',
             },
+        },
+        '& .setting-element': {
+            height: '100%',
+            margin: 0,
+            '& .header, .sorting-header': {
+                display: 'none',
+            },
+            '& .sorting-wrapper': {
+                padding: 0,
+                margin: 0,
+                height: '100%',
+            },
+            '& .checkbox-wrapper': {
+                '& .field-checkbox:last-child': {
+                    marginBottom: 0,
+                },
+            },
+        },
+    },
+    basketButton: {
+        '& .p-button-label': {
+            color: 'var(--primary-color)',
         },
     },
 });
@@ -153,7 +209,9 @@ const Main = () => {
     const dispatch = useDispatch();
     const table = useSelector(selectTable);
 
-    const overlayPanel = useRef(null);
+    const sortingOverlayPanel = useRef(null);
+    const brandsOverlayPanel = useRef(null);
+    const tagsOverlayPanel = useRef(null);
 
     useEffect(() => {
         (async () => {
@@ -205,17 +263,38 @@ const Main = () => {
             >
                 <Button
                     type="button"
-                    className={classes.basketButton}
-                    onClick={(e) => overlayPanel.current.toggle(e)}
-                    label="Filters"
+                    className={`${classes.basketButton} p-button-text`}
+                    onClick={(e) => sortingOverlayPanel.current.toggle(e)}
+                    label="Sorting"
                 />
-
                 <OverlayPanel
-                    ref={overlayPanel}
-                    className={classes.overlayPanel}
+                    ref={sortingOverlayPanel}
+                    className={`${classes.overlayPanel} ${classes.settingsSection} settings-section-in-overlay`}
                 >
                     <Sorting />
+                </OverlayPanel>
+                <Button
+                    type="button"
+                    className={`${classes.basketButton} p-button-text`}
+                    onClick={(e) => brandsOverlayPanel.current.toggle(e)}
+                    label="Brands"
+                />
+                <OverlayPanel
+                    ref={brandsOverlayPanel}
+                    className={`${classes.overlayPanel} ${classes.settingsSection} settings-section-in-overlay`}
+                >
                     <Brands products={products} brands={brands} />
+                </OverlayPanel>
+                <Button
+                    type="button"
+                    className={`${classes.basketButton} p-button-text`}
+                    onClick={(e) => tagsOverlayPanel.current.toggle(e)}
+                    label="Tags"
+                />
+                <OverlayPanel
+                    ref={tagsOverlayPanel}
+                    className={`${classes.overlayPanel} ${classes.settingsSection} settings-section-in-overlay`}
+                >
                     <Tags products={products} brands={brands} />
                 </OverlayPanel>
             </div>
