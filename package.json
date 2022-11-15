@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "json-server -w ./data/api.js -p 3001"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
