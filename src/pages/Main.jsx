@@ -213,7 +213,9 @@ const Main = () => {
             } else {
                 brandsResult = (
                     await (
-                        await fetch('http://127.0.0.1:3001/companies')
+                        await fetch(
+                            'https://ex-e-commerce-server.herokuapp.com/companies'
+                        )
                     ).json()
                 ).companies;
             }
@@ -237,7 +239,7 @@ const Main = () => {
     useEffect(() => {
         (async () => {
             const productsResult = await (
-                await fetch('http://127.0.0.1:3001/items')
+                await fetch('https://ex-e-commerce-server.herokuapp.com/items')
             ).json();
             setProducts(productsResult.items);
         })();
