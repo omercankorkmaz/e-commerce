@@ -6,6 +6,7 @@
 -   For stylesheets, JSS is used.
 -   PrimeReact is used for UI components (Button, SelectButton, Checkbox, RadioButton OverlayPanel, DataView).
 -   ESLint, Prettier and Airbnb style guides are included in development process.
+-   https://ex-e-commerce.herokuapp.com/
 
 ## Available Scripts
 
