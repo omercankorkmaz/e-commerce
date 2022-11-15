@@ -6,6 +6,7 @@ import Navbar from './components/Header';
 import Footer from './components/Footer';
 
 const useStyles = createUseStyles({
+    // Global Styles
     '@global': {
         body: {
             fontFamily: 'Open Sans !important',
@@ -42,14 +43,6 @@ const useStyles = createUseStyles({
             {
                 backgroundColor: 'var(--primary-color)',
             },
-        horizontalLine: {
-            borderStyle: 'solid',
-            borderColor: 'var(--horizontal-line-color)',
-            borderWidth: '0px',
-            borderBottomWidth: '2px',
-            marginBottom: '1.149rem',
-            marginTop: '1.022rem',
-        },
     },
     app: {
         backgroundColor: 'var(--main-bg-color)',

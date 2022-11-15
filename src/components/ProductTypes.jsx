@@ -39,6 +39,7 @@ const ProductTypes = ({ products }) => {
     const dispatch = useDispatch();
     const table = useSelector(selectTable);
 
+    // gets productTypes
     const productTypesToFilter = useMemo(
         () =>
             products.reduce((prevArr, currentEl) => {

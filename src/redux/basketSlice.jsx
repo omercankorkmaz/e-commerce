@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// for basket products' amounts and prices
 export const basketSlice = createSlice({
     name: 'basket',
     initialState: {

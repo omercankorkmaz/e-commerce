@@ -112,14 +112,8 @@ const Header = () => {
     return (
         <div className={classes.header}>
             <img className={classes.logo} src={Logo} alt="logo" />
-            {/* <Button
-                className={classes.basketButton}
-                label={`₺ ${basket.totalPrice}`}
-                loading={false}
-                loadingIcon="pi pi-spin pi-sun"
-                icon={<img src={Basket} alt="basket" />}
-            /> */}
             <button
+                data-testid="basket-button"
                 type="button"
                 className={classes.basketButton}
                 onClick={(e) => basketOverlayPanel.current.toggle(e)}

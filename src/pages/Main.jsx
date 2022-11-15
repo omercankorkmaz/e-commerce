@@ -128,12 +128,6 @@ const useStyles = createUseStyles({
         },
         settingsSection: {
             margin: '1rem 0',
-            '&.wide-settings-section': {
-                display: 'none',
-            },
-            '&.narrow-settings-section': {
-                display: 'block',
-            },
         },
     },
     '@media (max-width: 480px)': {
@@ -142,12 +136,6 @@ const useStyles = createUseStyles({
         },
         settingsSection: {
             margin: '0.75rem 0',
-            '&.wide-settings-section': {
-                display: 'none',
-            },
-            '&.narrow-settings-section': {
-                display: 'block',
-            },
         },
     },
     overlayPanel: {
@@ -185,6 +173,21 @@ const useStyles = createUseStyles({
     basketButton: {
         '& .p-button-label': {
             color: 'var(--primary-color)',
+        },
+    },
+    '@media (min-width: 1441px)': {
+        tableSection: {
+            width: '48rem',
+        },
+    },
+    '@media (min-width: 1600px)': {
+        tableSection: {
+            width: '58rem',
+        },
+    },
+    '@media (min-width: 1920px)': {
+        tableSection: {
+            width: '68rem',
         },
     },
 });
@@ -242,11 +245,13 @@ const Main = () => {
 
     return (
         <div className={classes.wrapper}>
+            {/* For laptop or desktop */}
             <div className={`${classes.settingsSection} wide-settings-section`}>
                 <Sorting />
                 <Brands products={products} brands={brands} />
                 <Tags products={products} brands={brands} />
             </div>
+            {/* For mobile phone or tablet */}
             <div
                 className={`${classes.settingsSection} narrow-settings-section`}
             >

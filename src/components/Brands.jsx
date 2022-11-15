@@ -14,6 +14,7 @@ const Brands = ({ products, brands }) => {
     const dispatch = useDispatch();
     const table = useSelector(selectTable);
 
+    // filter brands according to search input
     const filteredBrands = useMemo(
         () =>
             table.searchForBrands
@@ -26,6 +27,7 @@ const Brands = ({ products, brands }) => {
         [brands, table.searchForBrands]
     );
 
+    // get count of products for each brand
     const allProductNumbersForBrands = useMemo(
         () =>
             products.filter((product) =>
@@ -36,6 +38,7 @@ const Brands = ({ products, brands }) => {
         [products, table.productTypeToFilter]
     );
 
+    // select a brand handler
     const onSelectBrandToFilter = (e) => {
         const selectedBrands = [...table.brandsToFilter];
 
@@ -50,6 +53,7 @@ const Brands = ({ products, brands }) => {
         dispatch(setBrandsToFilter(selectedBrands));
     };
 
+    // select all brands handler
     const onSelectAllBrandsToFilter = (e) => {
         if (e.checked) {
             dispatch(setBrandsToFilter(['all']));

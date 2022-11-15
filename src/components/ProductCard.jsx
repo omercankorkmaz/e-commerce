@@ -58,7 +58,7 @@ const ProductCard = ({ product }) => {
     const dispatch = useDispatch();
 
     return (
-        <div className={classes.productCard}>
+        <div className={classes.productCard} data-testid="product-card">
             <div className={classes.productCardImageArea}>
                 <img
                     src={ItemPhoto}
@@ -68,13 +68,16 @@ const ProductCard = ({ product }) => {
             </div>
             <div className={classes.productCardPrice}>₺ {product.price}</div>
             <div className={classes.productCardName}>{product.name}</div>
-            <div className={classes.productCardAddButton}>
+            <div
+                className={classes.productCardAddButton}
+                data-testid="product-add-button"
+            >
                 <Button
                     label="Add"
                     onClick={() =>
                         dispatch(
                             add({
-                                slug: product.slug,
+                                slug: product.name,
                                 unitPrice: product.price,
                             })
                         )

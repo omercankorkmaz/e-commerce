@@ -62,6 +62,8 @@ const Table = ({ products }) => {
     const classes = useStyles();
     const table = useSelector(selectTable);
 
+    // filter product according to selected tags, brands and product types
+    // depends on them and products array
     const filteredProducts = useMemo(() => {
         const allTagsActive =
             table.tagsToFilter.All && table.tagsToFilter.All.checked;
@@ -93,8 +95,6 @@ const Table = ({ products }) => {
         table.brandsToFilter,
         table.tagsToFilter,
     ]);
-
-    const rows = 16;
 
     const productTemplate = (product) => (
         <ProductCard key={product.slug} product={new Product(product)} />
@@ -160,11 +160,12 @@ const Table = ({ products }) => {
     return (
         <div className={classes.table}>
             <DataView
+                data-testid="product-table"
                 className="product-table"
                 value={filteredProducts}
                 layout="grid"
                 itemTemplate={productTemplate}
-                rows={rows}
+                rows={16}
                 paginator
                 paginatorTemplate={paginatorTemplate}
                 sortOrder={table.sorting.order}

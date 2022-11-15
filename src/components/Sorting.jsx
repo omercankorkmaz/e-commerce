@@ -55,6 +55,7 @@ const Sorting = () => {
                             value={sortingType}
                             onChange={(e) => dispatch(setFilter(e.value))}
                             checked={table.sorting.key === sortingType.key}
+                            data-testid="sorting-item"
                         />
                         <label htmlFor={sortingType.key}>
                             {sortingType.name}

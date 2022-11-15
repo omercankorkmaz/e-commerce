@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// for sorting and filtering variables
 export const tableSlice = createSlice({
     name: 'table',
     initialState: {

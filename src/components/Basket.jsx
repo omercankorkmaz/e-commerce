@@ -96,6 +96,14 @@ const useStyles = createUseStyles({
             },
         },
     },
+    horizontalLine: {
+        borderStyle: 'solid',
+        borderColor: 'var(--horizontal-line-color)',
+        borderWidth: '0px',
+        borderBottomWidth: '2px',
+        marginBottom: '1.149rem',
+        marginTop: '1.022rem',
+    },
 });
 
 const Basket = () => {
@@ -105,7 +113,7 @@ const Basket = () => {
 
     return (
         <div className={classes.basket}>
-            <div className="basket-wrapper">
+            <div className="basket-wrapper" data-testid="basket-wrapper">
                 <div className="products-wrapper">
                     {Object.keys(basket.products).length === 0 ? (
                         <p>You haven&apos;t added anything to your cart yet</p>
@@ -114,7 +122,10 @@ const Basket = () => {
                             <div key={product}>
                                 <div className="product-wrapper">
                                     <div className="product-name-and-price">
-                                        <div className="product-name">
+                                        <div
+                                            className="product-name"
+                                            data-testid="basket-product-name"
+                                        >
                                             {product}
                                         </div>
                                         <div className="product-price">

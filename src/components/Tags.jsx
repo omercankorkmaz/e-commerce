@@ -14,6 +14,8 @@ const Tags = ({ products, brands }) => {
     const dispatch = useDispatch();
     const table = useSelector(selectTable);
 
+    // if search input exists, looks for tags to match it,
+    // depends on 'brands', 'original tags', and 'search input'
     const filteredTagsToFilter = useMemo(() => {
         if (table.searchForTags) {
             const newTagsToFilter = { ...table.tagsToFilter };
@@ -30,13 +32,10 @@ const Tags = ({ products, brands }) => {
             return newTagsToFilter;
         }
         return table.tagsToFilter;
-    }, [
-        brands,
-        table.searchForBrands,
-        table.tagsToFilter,
-        table.searchForTags,
-    ]);
+    }, [brands, table.tagsToFilter, table.searchForTags]);
 
+    // collects tags from products which has selected type and produced by selected brands
+    // depends on them and products array
     useEffect(() => {
         const tags = { All: { checked: true, number: 10 } };
         products.forEach((product) => {
@@ -56,6 +55,7 @@ const Tags = ({ products, brands }) => {
         dispatch(setTagsToFilter(tags));
     }, [products, table.productTypeToFilter, table.brandsToFilter]);
 
+    // get count of products for each tag
     const allProductNumbersForTags = useMemo(
         () =>
             products.filter(
@@ -69,6 +69,7 @@ const Tags = ({ products, brands }) => {
         [products, table.productTypeToFilter, table.brandsToFilter]
     );
 
+    // select a tag handler
     const onSelectTagToFilter = (e) => {
         const tags = { ...table.tagsToFilter };
         if (tags.All.checked) {
@@ -89,6 +90,7 @@ const Tags = ({ products, brands }) => {
         dispatch(setTagsToFilter(tags));
     };
 
+    // select all tags handler
     const onSelectAllTagsToFilter = (e) => {
         const tags = { ...table.tagsToFilter };
         if (e.checked) {
