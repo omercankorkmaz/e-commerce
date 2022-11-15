@@ -1,13 +1,15 @@
 const jsonServer = require("json-server");
+const items = require("./data/items.json");
+const companies = require("./data/companies.json");
 const server = jsonServer.create();
-const itemsRouter = jsonServer.router("./data/items.json");
-const companiesRouter = jsonServer.router("./data/companies.json");
-
+const router = jsonServer.router({
+  items,
+  companies,
+});
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
-server.use(itemsRouter, companiesRouter);
-
+server.use(router);
 const port = process.env.PORT || 3000;
 
 server.listen(port, () => {
