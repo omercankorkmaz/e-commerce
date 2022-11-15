@@ -1,7 +1,5 @@
 # Example e-commerce application
 
-## Tech Stack
-
 -   This project is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 -   Developed with latest version of React (18.2.0) with JS (jsx).
 -   Global state management handled with the help of Redux.  
