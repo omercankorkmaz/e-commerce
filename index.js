@@ -6,8 +6,7 @@ const companiesRouter = jsonServer.router("./data/companies.json");
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
-server.use(itemsRouter);
-server.use(companiesRouter);
+server.use(itemsRouter, companiesRouter);
 
 const port = process.env.PORT || 3000;
 
